@@ -5,20 +5,19 @@
         <grid-layout
           class="grid_layout"
           :layout.sync="layout"
-          :colNum="4"
+          :colNum="6"
           :is-draggable="true"
           :is-resizable="true"
           :is-mirrored="false"
           :vertical-compact="true"
           :use-css-transforms="true"
-          :autoSize="false"
         >
           <grid-item
             class="grid_item"
             v-for="item in tables"
             :key="item.id"
             :x="item.x"
-            :y="item.y"
+            :y="item.y" 
             :w="item.w"
             :h="item.h"
             :i="item.id"
@@ -45,9 +44,6 @@ export default {
     GridLayout: VueGridLayout.GridLayout,
     GridItem: VueGridLayout.GridItem,
   }, 
-  mounted() {
-    // console.log('this.cards)
-  },
   computed: {
     // eslint-disable-next-line vue/return-in-computed-property
     tables() {
@@ -100,9 +96,4 @@ export default {
   .grid_layout {
     position: relative;
   }
-  /* .grid_item {
-    position: absolute;
-    overflow-y: scroll;
-    border: 1px solid red;
-  } */
 </style>

@@ -5,24 +5,6 @@
       <CardHeader :item="item"></CardHeader>
       <CardControl :item="item"></CardControl>
     </div>
-    <!-- <div class="table">
-      <el-table
-        :data="item.tableData"
-        style="width: 100%"
-        border
-        :cell-style="cellStyle"
-        :header-cell-style="headerCellStyle"
-      >  
-        <el-table-column
-          v-for="(column, index) in item.columnDim"
-          :key="index"
-          :label="column.title"
-          :prop="column.title"
-          :align="column.align"
-        >
-        </el-table-column>
-      </el-table>
-    </div>  -->
   </div>
 </template>
 

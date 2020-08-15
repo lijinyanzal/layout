@@ -18,39 +18,29 @@
         <el-tabs 
           v-model="activeName" 
           type="card" 
-          @tab-click="handleClick" 
+          @tab-click="tabClickHandler" 
         >
           <el-tab-pane label="分时" name="first">
             <div>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium rerum eligendi quae nostrum et maxime itaque provident nulla reprehenderit totam voluptas vero, quibusdam consequatur at ut! Quod fugit hic autem.
-              Unde temporibus amet sint omnis? Architecto voluptas temporibus maiores, voluptatibus quaerat pariatur accusamus ipsum repellat id ea, maxime praesentium, fuga nisi? Velit autem numquam rerum possimus maiores quos quidem unde?
-              Odit molestias necessitatibus suscipit, culpa cum quis hic saepe, eos est, asperiores earum vitae aperiam. Doloremque veniam quas perspiciatis sit voluptates, tempore excepturi iusto aperiam totam ut molestiae architecto quia!
-              Facere enim cum iste libero? Magni porro dignissimos maxime repudiandae praesentium rem possimus molestiae deserunt repellat incidunt, consequatur inventore minus odit beatae id quas explicabo. Earum facere maxime quaerat nesciunt?
-              Maxime facere, culpa accusantium similique quo doloremque excepturi enim, fugiat asperiores mollitia nemo, laborum dicta recusandae corporis velit a laboriosam alias sint beatae ut rem incidunt. Quisquam temporibus cumque aliquam.
-              lorem*10
+              
             </div>
           </el-tab-pane>
-          <el-tab-pane label="5日" name="second">
+          <el-tab-pane label="日k" name="second">
             <div>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur harum recusandae eaque. Vitae tempore exercitationem a enim velit explicabo debitis esse, at natus quas nam ea officiis maiores optio corrupti?
+              <ECharts :item="item"></ECharts>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="日k" name="third">
+          <el-tab-pane label="月k" name="third">
             <div>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ab ducimus minus porro quis in quibusdam optio non ipsum odit atque nulla dolor libero blanditiis tempora eum ex, adipisci doloribus obcaecati.
+              <ECharts :item="item"></ECharts>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="周k" name="fourth">
+          <el-tab-pane label="年k" name="fouth">
             <div>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod quos facere nostrum quaerat ducimus odit ad magni, quidem sunt obcaecati modi tempora amet perferendis sit inventore iste quam voluptatum atque?
+              <ECharts :item="item"></ECharts>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="月k" name="fifth">
-            <div>
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Animi labore, eligendi sed quam esse facere, repudiandae soluta possimus, amet aliquid aspernatur iusto? Reprehenderit, illo hic obcaecati fuga eum aut pariatur.
-            </div>
-          </el-tab-pane>
-          <el-tab-pane name="sixth">
+          <el-tab-pane name="fifth">
             <el-dropdown slot="label" 
               placement="bottom-start"
             >
@@ -73,13 +63,17 @@
 </template>
 
 <script>
+import ECharts from '@/views/ECharts.vue'
 
 export default {
   data() {
     return {
-      activeName: 'first',
+      activeName: 'second',
       dateShow: false,
     };
+  },
+  components: {
+    ECharts
   },
   props: ['item'],
   computed: {
@@ -107,20 +101,18 @@ export default {
       end = end.toISOString().split("T")[0]
       return [start, end]
     },
-    handleClick(tab) {
-      if (tab.name === 'first' || tab.name === 'sixth' ) {
+    tabClickHandler(tab) {
+      if (tab.name === 'first' || tab.name === 'fifth' ) {
         this.dateShow = false
-      } else if (tab.name === 'second') {
-        let end = new Date()
-        let start = new Date()
-        start.setTime(start.getTime() - 3600 * 1000 * 24 * 5)
-        this.date = this.formatDate(start, end)
-        
-        this.$store.dispatch('getData', {start: this.date[0], end: this.date[1], id: this.item.id})
-        this.dateShow = true
       } else {
         this.dateShow = true
       }
+      const frequency = {
+        '日k': 'daily',
+        '月k': 'monthly',
+        '年k': 'annual',
+      }
+      this.$store.dispatch('getHistoryData', {code: this.item.name, frequency: frequency[tab.label], lable: tab.label})
     }
   }
 }
@@ -148,7 +140,7 @@ export default {
     position: absolute;
     left: 0px;
     right: 0px;
-    height: 200px;
+    height: 600px;
     overflow-y: scroll;
     color: #000;
   }
